@@ -1,0 +1,92 @@
+<!doctype html>
+<html lang="en"><head><meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Cortex — a personal superintelligence on a Raspberry Pi</title>
+<meta name="description" content="Interactive architecture tour of a homelab agent stack: Wit, Cortex, Tesla telemetry, Home Assistant, and the Muse protocols that grew out of it.">
+<style>
+ :root{--bg:#0b1020;--panel:#131a30;--panel2:#0f1528;--line:#24304f;--txt:#e8ebf4;--mut:#9aa4bf;--acc:#7db4ff;--acc2:#f5b04c;--good:#4ade80}
+ *{box-sizing:border-box} body{margin:0;background:var(--bg);color:var(--txt);font-family:system-ui,-apple-system,"Segoe UI",Roboto,sans-serif;line-height:1.55}
+ main{max-width:980px;margin:0 auto;padding:30px 18px 70px}
+ a{color:var(--acc)} h1{font-size:32px;margin:0 0 6px;line-height:1.2} h2{margin:30px 0 10px;font-size:22px}
+ .sub{color:var(--mut);margin:0 0 8px;max-width:70ch}
+ .tip{display:inline-block;background:#1c2a4a;border:1px solid var(--line);border-radius:999px;padding:2px 10px;font-size:12px;color:var(--acc);margin:4px 4px 0 0}
+ .hint{background:#16203c;border-left:3px solid var(--acc2);border-radius:8px;padding:10px 14px;color:#dbe2f2;font-size:14px;margin:12px 0}
+ .grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(210px,1fr));gap:10px;margin-top:14px}
+ .comp{background:var(--panel);border:1px solid var(--line);border-radius:12px;padding:13px;cursor:pointer;text-align:left;color:var(--txt);font:inherit}
+ .comp:hover{border-color:var(--acc)} .comp.active{border-color:var(--acc2);background:#182544}
+ .comp b{display:block;font-size:15px} .comp span{color:var(--mut);font-size:12.5px}
+ .detail{background:var(--panel2);border:1px solid var(--line);border-radius:12px;padding:18px;margin-top:14px;min-height:170px}
+ .detail h3{margin:0 0 4px} .detail .lbl{color:var(--acc2);font-size:11px;text-transform:uppercase;letter-spacing:.07em;margin-top:12px}
+ .detail p{margin:4px 0;color:#d5dae8}
+ .cards{display:grid;grid-template-columns:repeat(auto-fit,minmax(260px,1fr));gap:12px}
+ .card{background:var(--panel);border:1px solid var(--line);border-radius:12px;padding:16px}
+ .card h3{margin:0 0 6px;font-size:16px} .card p{color:var(--mut);font-size:14px;margin:0}
+ .tl{border-left:2px solid var(--line);margin:14px 0 0 8px;padding-left:20px}
+ .tl div{margin:0 0 14px;position:relative} .tl div::before{content:"";position:absolute;left:-26px;top:6px;width:10px;height:10px;border-radius:50%;background:var(--acc)}
+ .tl b{color:var(--acc)} footer{color:var(--mut);font-size:12.5px;margin-top:36px;border-top:1px solid var(--line);padding-top:14px}
+ code{background:#1a2440;padding:1px 6px;border-radius:6px;font-size:.92em}
+</style></head><body><main>
+<h1>Cortex — a personal superintelligence, running on a Raspberry Pi</h1>
+<p class="sub">One engineer's homelab agent stack: a Telegram front door, a Postgres core that owns the truth, a car that reports itself, a house that runs itself — and two open protocols that escaped into the wild. <b>Tap any component below</b> to see what it does, the decision behind it, and a tip if you're building your own.</p>
+<div><span class="tip">💡 Start with Wit → Cortex → Anton</span><span class="tip">🏠 Everything runs at home</span><span class="tip">🔒 Private by default</span><span class="tip">👉 Human approval to act</span></div>
+
+<h2>The architecture — tap to explore</h2>
+<div class="grid" id="grid"></div>
+<div class="detail" id="detail" aria-live="polite"></div>
+<div class="hint"><b>How to read this:</b> the flow is Telegram → Wit → Cortex → everything else. Agents never touch the database directly — if you remember one thing, remember that. It's the decision the rest of the design hangs off.</div>
+
+<h2>Design principles</h2>
+<div class="cards">
+ <div class="card"><h3>1 · One source of truth</h3><p>Structured data lives in Cortex/Postgres only. Agents keep pointers, not copies — so two agents can never disagree about what you ate or what you owe.</p></div>
+ <div class="card"><h3>2 · Typed interfaces only</h3><p>No direct SQL, no bypassing validation, no "trust me, it saved." A mutation counts when the owning service says OK. <i>Tip: this one rule kills most agent-data bugs.</i></p></div>
+ <div class="card"><h3>3 · Privacy is classified</h3><p>Health, notes, finances = private by default. Chores, groceries, house temp, the car = household. Unsure → private. The classification ships in code, not in someone's memory.</p></div>
+ <div class="card"><h3>4 · Reading is free, acting is gated</h3><p>Agents may look at anything they're scoped to. Purchases, bookings, and messages to people stop at a human approval card.</p></div>
+ <div class="card"><h3>5 · Self-maintaining, carefully</h3><p>Nightly agents review the day's conversations and resource history, auto-fix the safe set, and report the rest. Destructive changes are never silent.</p></div>
+ <div class="card"><h3>6 · Protocols outlive code</h3><p>muse-mailbox and musebook are frozen specs first, implementations second — so another person's Muse can join without sharing infrastructure.</p></div>
+</div>
+
+<h2>A day in the life</h2>
+<div class="tl">
+ <div><b>Morning</b> — Wit's briefing: calendar, weather, the car's charge state, anything the nightly review flagged or fixed.</div>
+ <div><b>Commute</b> — Fleet Telemetry streams the drive; TeslaMate records it. Habits (charge windows, fences, efficiency) accumulate quietly.</div>
+ <div><b>Day</b> — Meals logged in conversation land in Cortex through typed requests; the fitness numbers on the dashboard are the same numbers the agent sees. No copies, no drift.</div>
+ <div><b>Evening</b> — Home Assistant runs climate modes; the Bitcoin pipeline recomputes cycle indicators around midnight UTC and publishes them to <a href="https://www.amanthakkar.com/power-law-oscillator-indicator/?source=github-cortex">amanthakkar.com</a>.</div>
+ <div><b>Night</b> — Review agents read the day: what broke, what got fixed, what the RAM curve says. A backup runs weekly — and a restore <i>drill</i> proved it works before it was trusted.</div>
+</div>
+
+<h2>What grew out of it — all public</h2>
+<div class="cards">
+ <div class="card"><h3><a href="https://github.com/amanthakkar/muse-mailbox">muse-mailbox</a></h3><p>E2E-encrypted Muse↔Muse messaging via a blind relay. Born because two Muses had no legitimate way to reach each other.</p></div>
+ <div class="card"><h3><a href="https://github.com/amanthakkar/musebook">musebook</a></h3><p>Shared boards for a family's Muses — groceries, trips, lists — with per-board identities and approval before acting.</p></div>
+ <div class="card"><h3><a href="https://github.com/amanthakkar/crypto_finance">crypto_finance</a></h3><p>The indicator pipeline's open twin: causal, tested code + a <a href="https://amanthakkar.github.io/crypto_finance/">live dashboard</a>.</p></div>
+ <div class="card"><h3><a href="https://github.com/amanthakkar/openledger">openledger</a></h3><p>Self-hosted finance dashboard. Your bank data shouldn't need someone else's cloud.</p></div>
+ <div class="card"><h3><a href="https://github.com/amanthakkar/PhotosBridge">PhotosBridge</a></h3><p>iCloud Photos for Android — same philosophy, phone edition: fix the friction, don't rebuild the service.</p></div>
+ <div class="card"><h3><a href="https://github.com/amanthakkar">…and the gadget skills</a></h3><p>Tesla, Nest, and Bambu Lab skills proposed to Meta's muse-gadget-sdk (PRs #222, #224) — the homelab, exposed to Muse as gadgets.</p></div>
+</div>
+
+<div class="hint"><b>Building your own?</b> Three hints that would have saved me weeks: (1) dedupe your notifiers before adding any new alert — scheduler sprawl is the #1 homelab bug; (2) measure before optimizing — my car already stopped streaming when asleep, so the "fix" I planned solved nothing; (3) drill your restores, or you don't have backups.</div>
+
+<footer>Source for the core stack stays private by design (it holds the data the privacy model protects). This page is the architecture story — updated as the system evolves. · <a href="https://github.com/amanthakkar/cortex-showcase">cortex-showcase on GitHub</a> · <a href="https://amanthakkar.com">amanthakkar.com</a></footer>
+</main>
+<script>
+const C = {
+ wit:{n:"Wit — Telegram front door",t:"The bot everyone in the house talks to",d:"Wit receives messages across three surfaces (personal DM, household group, logs) and routes them: questions, reminders, home control, research jobs. Long research reports render as HTML→PDF instead of being crushed into Telegram's 4096-character limit.",dec:"One front door, many backends — the family never has to learn which subsystem does what.",tip:"Classify privacy per-surface: smoke tests and status spam never go to the household group."},
+ cortex:{n:"Cortex — the truth layer",t:"Postgres-backed API for structured personal data",d:"Fitness, reminders, lists, facts. Cortex validates every mutation and answers typed queries (50+ routes). Agents reach it only through its API — never direct database access.",dec:"If two agents keep their own copies, they will eventually disagree. One owner, one truth.",tip:"Return rich metadata with every mutation — agents use it to refresh their pointers without re-querying."},
+ anton:{n:"Anton — external Muse",t:"The same user, a second agent, outside the Pi",d:"Anton (a Muse running externally) collaborates with Wit: research, planning, coding, and cross-checks. The two agents coordinate through typed bridge requests and, with other people's Muses, through muse-mailbox.",dec:"Two agents with different vantage points beat one agent with a bigger prompt.",tip:"Give agent-to-agent channels a quiet mode — heartbeat chatter crowds out signal fast."},
+ ha:{n:"Home Assistant",t:"The house itself",d:"Climate (per-room modes), automations, presence. Agents request mode changes; HA executes and reports state back.",dec:"Don't rebuild what HA already does well — integrate, don't replace.",tip:"Room modes ('living room to cool') beat raw setpoints in conversation."},
+ tesla:{n:"TeslaMate + Fleet Telemetry",t:"The car, streaming itself",d:"Fleet Telemetry pushes drive/charge/location signals; TeslaMate records and analyzes. Polling stays configured as a fallback, capped and sleep-respecting.",dec:"Events over polling: measured first, the car already sleeps quietly — push just makes the waking hours richer.",tip:"Cap wakes (≤1/day, gated). A telemetry system that drains the car it watches is a bug with a dashboard."},
+ media:{n:"Self-hosted services",t:"Immich · Jellyfin · Paperless · Vaultwarden",d:"Photos, media, documents, passwords — the 'cloud', at home. Immich ML runs on-demand only (on upload/search), never resident, to keep the Pi's RAM for agents.",dec:"Self-host the boring-critical stuff; rent the rest.",tip:"On small hardware, 'runs on demand' beats 'always on' for anything ML-shaped."},
+ btc:{n:"Indicator pipeline",t:"Nightly Bitcoin cycle models",d:"Recomputes power-law oscillator, risk gauges, and classic overlays nightly; publishes JSON + charts that amanthakkar.com renders interactively. The open-source twin is crypto_finance.",dec:"The website is a view, not the system — data as JSON, rendering in the browser.",tip:"Causal (expanding) fits only: a chart that rewrites history teaches you lies."},
+ night:{n:"Nightly review agents",t:"The system maintains itself",d:"Review the day's conversations for anything broken/unfixed, watch RAM/process history, auto-fix the safe set (restart failed units, relieve disk pressure), and report everything else in the morning.",dec:"Autonomy with a blast-radius limit: safe fixes are pre-authorized; destructive ones are report-only.",tip:"Log what you fixed, not just what you found — the morning report is the trust mechanism."},
+ ledger:{n:"OpenLedger",t:"Net worth, at home",d:"Plaid-synced accounts rendered in a self-hosted dashboard; part of the same 'your data stays home' pattern as everything else here.",dec:"Finance was the last cloud holdout; it didn't need to be.",tip:"Encrypt provider tokens at rest (Fernet) and bind the app to localhost by default."}
+};
+const grid=document.getElementById('grid'), detail=document.getElementById('detail');
+Object.entries(C).forEach(([k,v],i)=>{
+ const b=document.createElement('button'); b.className='comp'+(i===0?' active':'');
+ b.innerHTML='<b>'+v.n+'</b><span>'+v.t+'</span>';
+ b.onclick=()=>{document.querySelectorAll('.comp').forEach(x=>x.classList.remove('active'));b.classList.add('active');show(k)};
+ grid.appendChild(b);
+});
+function show(k){const v=C[k];detail.innerHTML='<h3>'+v.n+'</h3><p>'+v.d+'</p><div class="lbl">Design decision</div><p>'+v.dec+'</p><div class="lbl">💡 Tip</div><p>'+v.tip+'</p>'}
+show('wit');
+</script></body></html>
