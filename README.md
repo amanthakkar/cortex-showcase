@@ -8,7 +8,7 @@ This repo is the public architecture story of my homelab agent stack. The source
 
 ## The system in one paragraph
 
-A Telegram bot (**Wit**) is the front door. Behind it, a Postgres-backed service (**Cortex**) owns structured truth — fitness, reminders, lists, facts — and agents (Wit on the Pi, and my Muse, **Anton**, running externally) may only reach it through typed, validated requests. Around that core: Home Assistant runs the house, TeslaMate + Tesla Fleet Telemetry stream my car's life, OpenLedger tracks net worth, a pipeline recomputes Bitcoin cycle indicators nightly for [amanthakkar.com](https://www.amanthakkar.com/power-law-oscillator-indicator/?source=github-cortex), and nightly agents review the day's conversations and resource history, fix what's safely fixable, and report the rest.
+A Telegram bot (**Wit**) is the front door — for now: the Telegram surface is being retired, with Muse becoming the primary conversational interface over the same Cortex core (the strangler-fig migration the architecture was designed for: interfaces are replaceable, the truth layer isn't). Behind it, a Postgres-backed service (**Cortex**) owns structured truth — fitness, reminders, lists, facts — and agents (Wit on the Pi, and my Muse, **Anton**, running externally) may only reach it through typed, validated requests. Around that core: Home Assistant runs the house, TeslaMate + Tesla Fleet Telemetry stream my car's life, OpenLedger tracks net worth, a pipeline recomputes Bitcoin cycle indicators nightly for [amanthakkar.com](https://www.amanthakkar.com/power-law-oscillator-indicator/?source=github-cortex), and nightly agents review the day's conversations and resource history, fix what's safely fixable, and report the rest.
 
 ## Architecture
 
