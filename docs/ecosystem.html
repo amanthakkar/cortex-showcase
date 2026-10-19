@@ -1,0 +1,116 @@
+<!doctype html>
+<html lang="en"><head><meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>The Muse ecosystem — Aman Thakkar's agentic systems, linked</title>
+<meta name="description" content="One interactive map of Aman Thakkar's personal-Muse ecosystem: encrypted agent messaging, family Muse boards, a Pi homelab stack, gadget skills contributed upstream, live crypto research, and the Android app Apple never shipped.">
+<style>
+ :root{--bg:#0b1020;--panel:#131a30;--panel2:#0f1528;--line:#24304f;--txt:#e8ebf4;--mut:#9aa4bf;--acc:#7db4ff;--acc2:#f5b04c;--good:#4ade80}
+ *{box-sizing:border-box} body{margin:0;background:var(--bg);color:var(--txt);font-family:system-ui,-apple-system,"Segoe UI",Roboto,sans-serif;line-height:1.55}
+ main{max-width:980px;margin:0 auto;padding:30px 18px 70px}
+ a{color:var(--acc)} h1{font-size:32px;margin:0 0 6px;line-height:1.2} h2{margin:30px 0 10px;font-size:22px}
+ .sub{color:var(--mut);margin:0 0 8px;max-width:72ch}
+ .tldr{background:#16203c;border:1px solid var(--line);border-radius:12px;padding:14px 18px;margin:16px 0;font-size:15px}
+ .tldr b{color:var(--acc2)}
+ .hint{background:#16203c;border-left:3px solid var(--acc2);border-radius:8px;padding:10px 14px;color:#dbe2f2;font-size:14px;margin:12px 0}
+ .chips{display:flex;flex-wrap:wrap;gap:8px;margin:16px 0 4px}
+ .chip{background:var(--panel);border:1px solid var(--line);color:var(--txt);border-radius:999px;padding:6px 14px;font:inherit;font-size:13.5px;cursor:pointer}
+ .chip:hover{border-color:var(--acc)} .chip.sel{border-color:var(--acc2);background:#182544;color:#fff}
+ .grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(215px,1fr));gap:10px;margin-top:14px}
+ .card{background:var(--panel);border:1px solid var(--line);border-radius:12px;padding:13px;cursor:pointer;text-align:left;color:var(--txt);font:inherit;width:100%}
+ .card:hover{border-color:var(--acc)} .card.active{border-color:var(--acc2);background:#182544}
+ .card b{display:block;font-size:15px} .card span{color:var(--mut);font-size:12.5px;display:block;margin-top:2px}
+ .badge{display:inline-block;font-size:11px;border:1px solid var(--good);color:var(--good);border-radius:999px;padding:1px 8px;margin-top:8px}
+ .badge.amber{border-color:var(--acc2);color:var(--acc2)} .badge.blue{border-color:var(--acc);color:var(--acc)}
+ .detail{background:var(--panel2);border:1px solid var(--line);border-radius:12px;padding:18px;margin-top:14px;min-height:190px}
+ .detail h3{margin:0 0 4px} .detail .lbl{color:var(--acc2);font-size:11px;text-transform:uppercase;letter-spacing:.07em;margin-top:12px}
+ .detail p{margin:4px 0;color:#d5dae8} .detail .links{margin-top:14px;display:flex;gap:10px;flex-wrap:wrap}
+ .btn{display:inline-block;background:#1c2a4a;border:1px solid var(--acc);color:var(--txt);border-radius:8px;padding:7px 14px;text-decoration:none;font-size:14px}
+ .btn:hover{background:#24365e}
+ .tour{display:grid;grid-template-columns:repeat(auto-fit,minmax(200px,1fr));gap:10px;margin-top:12px}
+ .step{background:var(--panel);border:1px solid var(--line);border-radius:12px;padding:13px;font-size:14px}
+ .step b{color:var(--acc);display:block;margin-bottom:4px}
+ footer{color:var(--mut);font-size:12.5px;margin-top:36px;border-top:1px solid var(--line);padding-top:14px}
+</style></head><body><main>
+<h1>The Muse ecosystem, on one page</h1>
+<p class="sub">Everything below grew out of one home system: a personal Muse stack running on a Raspberry Pi in Sunnyvale. Some pieces became open protocols, some became live demos, two became the first community skill PRs to Meta's gadget catalog. This page is the map — tap anything for the full picture.</p>
+
+<div class="tldr"><b>TL;DR —</b> Start with <b>muse-mailbox</b> if you care about agent-to-agent trust, the <b>Cortex tour</b> if you care about architecture, and the <b>crypto dashboard</b> if you want to play with live data. Everything here is real, running, and linked — no mockups.</div>
+
+<h2>How to read this page</h2>
+<div class="hint">💡 <b>Filters</b> narrow the grid by kind. <b>Tap a card</b> to load its detail panel: what it is, why it exists, where to try it, and one hard-won tip from building it. <b>Badges</b> are honest status: “Live demo” means a page you can open right now; “PR open” means exactly that — proposed, not merged.</div>
+
+<div class="chips" id="chips" role="group" aria-label="Filter projects"></div>
+<div class="grid" id="grid"></div>
+<div class="detail" id="detail" aria-live="polite"></div>
+
+<h2>The 3-minute tour</h2>
+<p class="sub">If you only have three minutes, take this path — each stop motivates the next.</p>
+<div class="tour">
+ <div class="step"><b>1 · Cortex tour (2 min)</b>The system itself: a Pi, a Postgres truth layer, a car, a house. Read the architecture before the pieces. <br><a href="index.html">Open the tour →</a></div>
+ <div class="step"><b>2 · muse-mailbox (1 min)</b>Two Muses needed to talk without trusting the relay. The protocol that fell out — and the threat model that shapes it.</div>
+ <div class="step"><b>3 · musecases (1 min)</b>The same stack, contributed upstream: Tesla, Nest, and Bambu Lab skills, dogfooded on real hardware first.</div>
+ <div class="step"><b>4 · One live demo</b>Pick the crypto dashboard or the power-law oscillator and click around. Live beats described.</div>
+</div>
+
+<h2>Why one ecosystem, not nine projects?</h2>
+<div class="hint">Each piece exists because the system needed it: the mailbox exists because two household Muses needed a channel neither operator could read; musebook exists because shared agent state needed human approval gates; the gadget skills exist because the Pi already talked to the car, the thermostat, and the printer. The through-line is an engineering rule: <b>protocols before code, a typed truth layer under every agent, and a human tap where it matters.</b></div>
+
+<footer>Built and run by <a href="https://github.com/amanthakkar">Aman Thakkar</a> · Architecture: <a href="index.html">Cortex tour</a> · Source repos: <a href="https://github.com/amanthakkar?tab=repositories">github.com/amanthakkar</a> · Site: <a href="https://amanthakkar.com">amanthakkar.com</a><br>Statuses verified 19 Oct 2026: PRs #222/#224 open with CLA checks passing and awaiting human review; a second contributor joined the skill queue on 19 Oct (Ecowitt, #251) — the “only skill PRs” era lasted three days and is reported here as history, not as a current claim.</footer>
+</main>
+<script>
+const PROJECTS=[
+ {id:"cortex",name:"Cortex — the homelab stack",cat:"live",tag:"Interactive architecture tour",badge:"Live demo",badgeCls:"",
+  what:"A personal superintelligence on a Raspberry Pi: a Postgres-backed truth layer (Cortex), a Telegram agent (Wit) being retired in favour of Muse as the primary interface, Home Assistant for the house, TeslaMate + Fleet Telemetry for the car, and nightly self-review agents.",
+  why:"It is the system all the other projects were extracted from. The design rule that survived contact with production: agents propose, a typed validated service disposes — no agent touches the database directly.",
+  tip:"Interfaces are replaceable, the truth layer isn't. The Telegram→Muse migration is a strangler-fig swap of the front door precisely because the core never knew which chat app was talking to it.",
+  links:[["Take the tour","index.html"],["Read the write-up","https://github.com/amanthakkar/cortex-showcase"]]},
+ {id:"mailbox",name:"muse-mailbox",cat:"protocols",tag:"Encrypted messaging between Muse instances",badge:"v1.0.0 released",badgeCls:"blue",
+  what:"End-to-end encrypted messaging between Muse instances over a blind Cloudflare relay that cannot read a word: Ed25519 + X25519 + AES-256-GCM, directional credentials, idempotent delivery, threading and acknowledgements. Protocol frozen as muse-mailbox/2.",
+  why:"Two people, two Muses, one household's worth of coordination — and neither operator should be able to read the other's agent traffic in transit. So the relay was designed to be trustworthy by being unable to betray.",
+  tip:"Freeze the protocol before you fall in love with the implementation. The frozen spec is what let a second, independently-run Muse interoperate without a single shared line of client code.",
+  links:[["Repo + protocol","https://github.com/amanthakkar/muse-mailbox"],["Release v1.0.0","https://github.com/amanthakkar/muse-mailbox/releases/tag/v1.0.0"]]},
+ {id:"musebook",name:"musebook",cat:"protocols",tag:"Private boards for your family's Muses",badge:"v0.1.0 released",badgeCls:"blue",
+  what:"An open protocol plus a Cloudflare Workers reference server for private, per-family boards where Muses post, propose, and coordinate — with per-board Ed25519 identities and a hard rule: human approval before any Muse acts externally.",
+  why:"Household agents kept reinventing shared state in chat scrollback. Musebook gives them a board with identity, signatures, and an approval gate — the audit trail chat never had.",
+  tip:"Approval gates belong in the protocol, not the prompt. A signed 'approved' state a server can verify survives a model having a bad day; an instruction in a system prompt does not.",
+  links:[["Repo + protocol","https://github.com/amanthakkar/musebook"],["Release v0.1.0","https://github.com/amanthakkar/musebook/releases/tag/v0.1.0"]]},
+ {id:"musecases",name:"musecases",cat:"contrib",tag:"Gadget skills: Tesla · Nest · Bambu Lab",badge:"PRs #222 / #224 open",badgeCls:"amber",
+  what:"Three Muse gadget skills — Tesla (TeslaMate/Fleet Telemetry), Google Nest thermostats (SDM), Bambu Lab printers — written against real hardware at home, then contributed to Meta's muse-gadget-sdk catalog in upstream house format.",
+  why:"Filed 16 Oct 2026, these were the first community skill PRs in the catalog's queue. Status, honestly: CLA signed, checks green, mergeable — awaiting human review. A second contributor joined the queue on 19 Oct (#251, Ecowitt).",
+  tip:"Dogfood before you contribute. Every sharp edge in these skills — like Bambu's Developer-Mode trade-off — is stated in the skill itself because living with the hardware surfaced it first.",
+  links:[["Catalog page","https://amanthakkar.github.io/musecases/"],["Repo","https://github.com/amanthakkar/musecases"],["PR #222","https://github.com/facebookincubator/muse-gadget-sdk/pull/222"],["PR #224","https://github.com/facebookincubator/muse-gadget-sdk/pull/224"]]},
+ {id:"crypto",name:"crypto_finance",cat:"live",tag:"Quant research as a tested Python package",badge:"Live demo",badgeCls:"",
+  what:"Bitcoin cycle research rebuilt from notebooks into a causal, tested Python package with a CLI: power-law oscillator, logarithmic-regression rainbow, stock-to-flow (and its limits), portfolio tools — plus an interactive dashboard with an explainer for every view.",
+  why:"Notebooks that can't be re-run can't be trusted. The rebuild enforces causality (no future data in any indicator) with tests, and its readings reproduce the live site within ~1–2%.",
+  tip:"Read the stock-to-flow chapter for the critique, not the chart. A model whose failure modes are documented is worth more than one that only shows its wins.",
+  links:[["Interactive dashboard","https://amanthakkar.github.io/crypto_finance/"],["Repo","https://github.com/amanthakkar/crypto_finance"],["Live oscillator","https://www.amanthakkar.com/power-law-oscillator-indicator/?source=github-ecosystem"]]},
+ {id:"icloud",name:"iCloud Photos on Android",cat:"tools",tag:"The app Apple never shipped",badge:"v0.3 APK released",badgeCls:"blue",
+  what:"A plain-Java Android client (no Gradle — hand-assembled SDK build) that wraps the official iCloud Photos web app properly: persistent login, reliable uploads, share-sheet and invite-link handling, download bridge, optional fingerprint lock.",
+  why:"An Android user in an iCloud Photos household shouldn't need a desktop browser workaround to join a shared album. The fix is friction removal — honestly labelled as a workflow advantage, not new capability.",
+  tip:"The whole app is under 70 KB because it refuses scope: no sync engine, no editor. Saying no in the README is a feature — it is why v0.3 shipped in a day.",
+  links:[["Repo","https://github.com/amanthakkar/icloud-photos-on-android"],["Get the APK (v0.3)","https://github.com/amanthakkar/icloud-photos-on-android/releases/tag/v0.3"]]},
+ {id:"openledger",name:"openledger",cat:"tools",tag:"Privacy-first self-hosted personal finance",badge:"Self-hosted",badgeCls:"blue",
+  what:"A personal finance dashboard (Next.js + FastAPI + Postgres + Plaid) that runs at home: bank sync, net-worth history, encrypted provider tokens, localhost by default. Your bank data stays on your hardware.",
+  why:"Every hosted finance app asks you to hand a third party your full transaction history forever. OpenLedger is the refusal, engineered: the same convenience, none of the custody.",
+  tip:"Localhost-by-default is a security posture you can explain in one sentence — and the sentence is the feature list when the audience is your own family.",
+  links:[["Repo","https://github.com/amanthakkar/openledger"]]},
+ {id:"micro",name:"microservices-docker-k8s-mongodb",cat:"tools",tag:"Event-driven microservices, built to learn",badge:"Earlier work",badgeCls:"amber",
+  what:"A from-scratch event-driven microservices system — event bus, CQRS-style read model, Kubernetes manifests — kept public as the honest 'learn the architecture by building it' layer of the portfolio.",
+  why:"Staff-level portfolios show trajectory, not just highlights. This is the foundation the agent infrastructure stands on, rough edges documented rather than hidden.",
+  tip:"Keep your learning repos and label them as such. Archived tutorials and one clearly-labelled learning build tell a truer story than a profile scrubbed to only flagships.",
+  links:[["Repo","https://github.com/amanthakkar/microservices-docker-k8s-mongodb"]]}
+];
+const FILTERS=[["all","All projects"],["live","Live demos"],["protocols","Protocols"],["contrib","Upstream contributions"],["tools","Tools & earlier work"]];
+const chips=document.getElementById('chips'),grid=document.getElementById('grid'),detail=document.getElementById('detail');
+let curFilter='all',curId='cortex';
+function renderChips(){chips.innerHTML=FILTERS.map(([k,l])=>`<button class="chip${k===curFilter?' sel':''}" data-f="${k}">${l}</button>`).join('');
+ chips.querySelectorAll('.chip').forEach(c=>c.onclick=()=>{curFilter=c.dataset.f;const vis=PROJECTS.filter(p=>curFilter==='all'||p.cat===curFilter);if(!vis.find(p=>p.id===curId)&&vis.length)curId=vis[0].id;render();});}
+function renderGrid(){const vis=PROJECTS.filter(p=>curFilter==='all'||p.cat===curFilter);
+ grid.innerHTML=vis.map(p=>`<button class="card${p.id===curId?' active':''}" data-id="${p.id}"><b>${p.name}</b><span>${p.tag}</span><span class="badge ${p.badgeCls}">${p.badge}</span></button>`).join('');
+ grid.querySelectorAll('.card').forEach(c=>c.onclick=()=>{curId=c.dataset.id;render();});}
+function renderDetail(){const p=PROJECTS.find(x=>x.id===curId);if(!p){detail.innerHTML='';return;}
+ detail.innerHTML=`<h3>${p.name}</h3><p style="color:var(--mut)">${p.tag} · <b style="color:var(--good)">${p.badge}</b></p><div class="lbl">What it is</div><p>${p.what}</p><div class="lbl">Why it exists</div><p>${p.why}</p><div class="lbl">Builder's tip</div><p>💡 ${p.tip}</p><div class="links">${p.links.map(([l,u])=>`<a class="btn" href="${u}">${l} →</a>`).join('')}</div>`;}
+function render(){renderChips();renderGrid();renderDetail();}
+render();
+</script>
+</main></body></html>

@@ -53,6 +53,8 @@ A Telegram bot (**Wit**) is the front door — for now: the Telegram surface is 
 - **Backups you haven't restored are hopes, not backups.** The Postgres backup only counted once a restore *drill* into a throwaway database matched row counts.
 - **A relay that can't read anything can still be useful.** muse-mailbox exists because two Muses had no legitimate push channel to each other — a blind relay + polling with a presence oracle gets ~5–15s delivery without trusting the middle.
 
+**→ [The Muse ecosystem on one page](https://amanthakkar.github.io/cortex-showcase/ecosystem.html)** — every public project that grew out of this stack, filterable, with live demos and a 3-minute tour.
+
 ## Status
 
 Running in production at home since 2025, evolving weekly. This showcase is updated as the architecture changes; the private monorepo is not public and won't be — it contains exactly the data the privacy model exists to protect.
