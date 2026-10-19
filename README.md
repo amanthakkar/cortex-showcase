@@ -44,7 +44,7 @@ A Telegram bot (**Wit**) is the front door — for now: the Telegram surface is 
 | [musebook](https://github.com/amanthakkar/musebook) | Private boards for a family's Muses — open protocol + reference server |
 | [crypto_finance](https://github.com/amanthakkar/crypto_finance) | The indicator research, rebuilt as causal tested code (the Pi pipeline's open twin) |
 | [openledger](https://github.com/amanthakkar/openledger) | Privacy-first self-hosted finance dashboard |
-| [PhotosBridge](https://github.com/amanthakkar/PhotosBridge) | iCloud Photos for Android — the same "fix the friction" philosophy, applied to phones |
+| [Apple on Android](https://github.com/amanthakkar/apple-on-android) | iCloud Photos for Android — the same "fix the friction" philosophy, applied to phones |
 
 ## Lessons that cost me real debugging time
 
