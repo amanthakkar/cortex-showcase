@@ -1,5 +1,6 @@
 # cortex-showcase
 
+[![Live tour](https://img.shields.io/badge/live-interactive%20tour-blue)](https://amanthakkar.github.io/cortex-showcase/) [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](LICENSE)
 **A personal superintelligence that runs my house — designed, built, and operated by one engineer on a Raspberry Pi.**
 
 This repo is the public architecture story of my homelab agent stack. The source monorepo stays private (it knows too much about my house); what's here is the part worth sharing: the design, the decisions, and the lessons.
